@@ -13,62 +13,57 @@ function App() {
     {id: 3, author: 'Эрик Х. Клайн"	"История 1177 год до н.э. Год когда пала цивилизация', name: 'АСТ', published: '', year: '2018', city: 'Москва'}
   ]);
   
-  const [name, setName] = useState('');
-  const [author, setAuthor] = useState('');
-  const [published, setPublished] = useState('');
-  const [year, setYear] = useState('');
-  const [city, setCity] = useState('');
+  const [book, setBook] = useState({
+    name: '',
+    author: '',
+    published: '',
+    year: '',
+    city: ''
+  });
 
   const addNewBook = (e) => {
     e.preventDefault();    
-    const newBook = {
-      id: Date.now(),
-      name,
-      author,
-      published,
-      year,
-      city
-    }
     
-    setBooks([...books, newBook]);
-    setName('');
-    setAuthor('');
-    setPublished('');
-    setYear('');
-    setCity('');
-
+    setBooks([...books, {...book, id: Date.now()}]);
+    setBook({
+      name: '',
+      author: '',
+      published: '',
+      year: '',
+      city: ''
+    });  
   }
 
   return (
     <div className="App">
       <form>
         <MyInput 
-          value={name}
-          onChange={e => setName(e.target.value)}
+          value={book.name}
+          onChange={e => setBook({...book, name: e.target.value})}
           type="text"
           placeholder="Название книги"
         />
         <MyInput 
-          value={author}
-          onChange={e => setAuthor(e.target.value)}
+          value={book.author}
+          onChange={e => setBook({...book, author: e.target.value})}
           type="text"
           placeholder="Автор"
         />
         <MyInput
-          value={published}
-          onChange={e => setPublished(e.target.value)}
+          value={book.published}
+          onChange={e => setBook({...book, published: e.target.value})}
           type="text"
           placeholder="Издательство"
         />
         <MyInput 
-          value={year}
-          onChange={e => setYear(e.target.value)}
+          value={book.year}
+          onChange={e => setBook({...book, year: e.target.value})}
           type="text"
           placeholder="Год издания"
         />
         <MyInput
-          value={city}
-          onChange={e => setCity(e.target.value)} 
+          value={book.city}
+          onChange={e => setBook({...book, city: e.target.value})} 
           type="text"
           placeholder="Город"
         />
