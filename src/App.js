@@ -15,10 +15,14 @@ function App() {
         setBooks([...books, newBook]); 
   }
 
+  const removeBook = (book) => {
+        setBooks(books.filter(b => b.id !== book.id)); 
+  }
+
   return (
     <div className="App">
       <BookForm create={createNewBook}/>
-      <BookList books={books} title="Список книг"/>      
+      <BookList remove={removeBook} books={books} title="Список книг"/>      
     </div>
   );
 }

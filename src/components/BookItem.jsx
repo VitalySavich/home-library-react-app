@@ -26,7 +26,7 @@ const BookItem = (props) => {
                 <MyButton onClick={() => console.log('Открыт!')}>
                     Открыть
                 </MyButton>
-                <MyButton onClick={() => console.log('Удалить!')}>
+                <MyButton onClick={() => props.remove(props.book)}>
                     Удалить
                 </MyButton>
             </div>
