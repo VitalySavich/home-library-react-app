@@ -22,7 +22,12 @@ function App() {
   return (
     <div className="App">
       <BookForm create={createNewBook}/>
-      <BookList remove={removeBook} books={books} title="Список книг"/>      
+      {books.length !== 0 
+        ?
+        <BookList remove={removeBook} books={books} title="Список книг"/> 
+        :
+        <h1 style={{textAlign: 'center'}}>Книги не найдены!</h1> 
+      }           
     </div>
   );
 }
