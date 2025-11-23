@@ -2,6 +2,13 @@ import React from 'react';
 import BookItem from './BookItem';
 
 const BookList = ({books, title, remove}) => {
+    if (!books.length) {
+        return (
+            <h1 style={{textAlign: 'center'}}>
+                Книги не найдены!
+            </h1>
+        )
+    }
 
     return (
         <div>

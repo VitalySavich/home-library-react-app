@@ -3,8 +3,9 @@ import './App.css';
 import { useMemo, useState } from 'react';
 import BookList from './components/BookList';
 import BookForm from './components/BookForm';
-import MySelect from './components/ui/select/MySelect';
-import MyInput from './components/ui/input/MyInput';
+import BookFilter from './components/BookFilter';
+import MyModal from './components/ui/modal/MyModal';
+import MyButton from './components/ui/button/MyButton';
 
 function App() {
 
@@ -15,61 +16,43 @@ function App() {
   ]);
 
   const [filter, setFilter] = useState({sort: '', query: ''});
-
-  const [selectedSort, setSelectedSort] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [modal, setModal] = useState(false);
 
   const sortedBooks = useMemo(() => {
-    if(selectedSort){
-      return [...books].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]));
+    if(filter.sort){
+      return [...books].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]));
     }else{
       return books;
     }
-  }, [selectedSort, books]); 
+  }, [filter.sort, books]); 
 
   const sortedAndSearchedBooks = useMemo(() => {
-    return sortedBooks.filter(book => book.name.toLowerCase().includes(searchQuery.toLowerCase()));
-  }, [searchQuery, sortedBooks]);
+    return sortedBooks.filter(book => book.name.toLowerCase().includes(filter.query.toLowerCase()));
+  }, [filter.query, sortedBooks]);
 
   const createNewBook = (newBook) => {
         setBooks([...books, newBook]); 
+        setModal(false);
   }
 
   const removeBook = (book) => {
         setBooks(books.filter(b => b.id !== book.id)); 
   }
 
-  const sortBooks = (sort) => {
-    setSelectedSort(sort);    
-  }
-
   return (
     <div className="App">
-      <BookForm create={createNewBook}/>
+      <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
+          Добавить книгу
+      </MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <BookForm create={createNewBook}/>
+      </MyModal>
       <hr style={{margin: "15px 0"}}/>
-      <MyInput 
-        value={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
-        placeholder="Поиск по названию"
+      <BookFilter
+        filter={filter}
+        setFilter={setFilter}
       />
-      <MySelect
-          value={selectedSort}
-          onChange={sortBooks}
-          defaultValue="Сортировка"
-          options={[
-              {value: 'name', name: 'По названию'},
-              {value: 'author', name: 'По автору'},
-              {value: 'published', name: 'По издательству'},
-              {value: 'year', name: 'По году издания'},
-              {value: 'city', name: 'По городу'}
-          ]}
-      />
-      {sortedAndSearchedBooks.length !== 0 
-        ?
-        <BookList remove={removeBook} books={sortedAndSearchedBooks} title="Список книг"/> 
-        :
-        <h1 style={{textAlign: 'center'}}>Книги не найдены!</h1> 
-      }           
+      <BookList remove={removeBook} books={sortedAndSearchedBooks} title="Список книг"/> 
     </div>
   );
 }
